@@ -17,6 +17,7 @@ Esta aplicación es una aplicación web desarrollada en React que permite a los 
 - API de CoinGecko
 
 #Instalación
+
 Clona este repositorio en tu computadora local y ejecuta el siguiente comando para instalar las dependencias:
 
 npm install
