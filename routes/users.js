@@ -32,16 +32,145 @@ router.use(
  *              email:
  *                  type: string
  *                  description: The user's email
+ *              profile:
+ *                  type: string
+ *                  description: The user's profile picture in Base64
+ *              description:
+ *                  type: string
+ *                  description: The user's description
  *          required:
  *              - name
  *              - email
+ *              - profile
+ *              - description
  *          example:
  *              name: Jhon
  *              email: jhon@gmail.com
- *      UserArray:
- *          type: array
- *          items:
+ *              profile: iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=
+ *              description: I'am John!
+ *      Credentials:
+ *          type: object
+ *          properties:
+ *              email:
+ *                  type: string
+ *                  description: The user's email
+ *              password:
+ *                  type: string
+ *                  description: The user's password
+ *          required:
+ *              - email
+ *              - password
+ *          example:
+ *              email: jhon@gmail.com
+ *              password: Jhon@123
+ *      NewUser:
+ *          type: object
+ *          properties:
+ *              name:
+ *                  type: string
+ *                  description: The user's name
+ *              email:
+ *                  type: string
+ *                  description: The user's email
+ *              password:
+ *                  type: string
+ *                  description: The user's password
+ *          required:
+ *              - name
+ *              - email
+ *              - password
+ *          example:
+ *              name: Jhon
+ *              email: jhon@gmail.com
+ *              password: Jhon@123
+ * tags:
+ *   name: Users
+ *   description: The Users API
+ * /login:
+ *   post:
+ *     summary: Login to an User
+ *     tags: [Users]
+ *     requestBody:
+ *       content:
+ *         'application/json':
+ *            schema:
+ *              $ref: '#/components/schemas/Credentials'
+ *     responses:
+ *       200:
+ *         description: The user information.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Some error message
+ *       500:
+ *         description: Some server error
+ * /register:
+ *   post:
+ *     summary: Register an User
+ *     tags: [Users]
+ *     requestBody:
+ *       content:
+ *         'application/json':
+ *            schema:
+ *              $ref: '#/components/schemas/NewUser'
+ *     responses:
+ *       200:
+ *         description: Success message
+ *       409:
+ *         description: Some error message
+ *       500:
+ *         description: Some server error
+ * /users:
+ *   get:
+ *     summary: Create a new User
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: The created user.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ *       500:
+ *         description: Some server error
+ * /users/id:
+ *   get:
+ *     summary: Get a user information
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: The user information
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Some server error
+ *   put:
+ *     summary: Edit a user information
+ *     tags: [Users]
+ *     requestBody:
+ *       content:
+ *         'application/json':
+ *            schema:
  *              $ref: '#/components/schemas/User'
+ *     responses:
+ *       200:
+ *         description: The user information
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Some server error
  */
 
 router.post("/login", async (req, res) => {
@@ -99,26 +228,6 @@ router.post("/register", async (req, res) => {
   }
 });
 
-/**
- * @swagger
- * tags:
- *   name: User
- *   description: The Users API
- * /users:
- *   get:
- *     summary: Create a new User
- *     tags: [Users]
- *     responses:
- *       200:
- *         description: The created user.
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/UserArray'
- *       500:
- *         description: Some server error
- *
- */
 router.get("/users", async (req, res) => {
   try {
     const users = await User.find();
@@ -129,32 +238,6 @@ router.get("/users", async (req, res) => {
   }
 });
 
-/**
- * @swagger
- * tags:
- *   name: User
- *   description: The Users API
- * /users/:id:
- *   get:
- *     summary: Create a new User
- *     tags: [Users]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/User'
- *     responses:
- *       200:
- *         description: The created user.
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/User'
- *       500:
- *         description: Some server error
- *
- */
 router.get("/users/:id", async (req, res) => {
   const { id } = req.params;
 
