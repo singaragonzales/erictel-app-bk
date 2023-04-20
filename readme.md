@@ -25,4 +25,4 @@ Para iniciar la aplicación, ejecuta el siguiente comando en tu terminal:
 
 npm run dev
 
-La aplicación se ejecutará en http://localhost:5173.
+La aplicación se ejecutará en http://localhost:3000.
